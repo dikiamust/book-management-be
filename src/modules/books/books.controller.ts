@@ -6,11 +6,12 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { BookService } from './books.service';
-import { CreateBookDto } from './dto';
-import { create } from './example-response';
+import { CreateBookDto, QueryBookList } from './dto';
+import { create, list } from './example-response';
 
 @ApiTags('Book')
 @Controller('books')
@@ -31,6 +32,22 @@ export class BookController {
   @Post()
   create(@Body() dto: CreateBookDto) {
     return this.bookService.create(dto);
+  }
+
+  @ApiOperation({
+    description: `Get book list`,
+  })
+  @ApiOkResponse({
+    description: 'Success Response',
+    content: {
+      'application/json': {
+        example: list,
+      },
+    },
+  })
+  @Get()
+  list(@Query() query: QueryBookList) {
+    return this.bookService.list(query);
   }
 
   @ApiOperation({

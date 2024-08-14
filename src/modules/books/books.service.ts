@@ -4,7 +4,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
-import { CreateBookDto } from './dto';
+import { CreateBookDto, QueryBookList } from './dto';
+import { PaginationResponse } from 'src/common/pagination';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class BookService {
@@ -18,6 +20,54 @@ export class BookService {
 
       const { title, author, publishedYear, genres, stock } = newBook;
       return { title, author, publishedYear, genres, stock };
+    } catch (error) {
+      throw new BadRequestException(error?.message || 'Something went wrong');
+    }
+  }
+
+  async list(query: QueryBookList) {
+    try {
+      const skip = query?.limit
+        ? Number(query.limit) * Number(query.page - 1)
+        : undefined;
+      const take = query?.limit ? Number(query.limit) : undefined;
+
+      const where: Prisma.BookWhereInput = {
+        deletedAt: null,
+      };
+
+      if (query?.search) {
+        const searchCondition = {
+          contains: query?.search,
+          mode: Prisma.QueryMode.insensitive,
+        };
+
+        where.OR = [
+          { title: searchCondition },
+          { author: searchCondition },
+          { genres: { hasSome: [query.search] } },
+        ];
+      }
+
+      const book = await this.prismaService.book.findMany({
+        orderBy: {
+          createdAt: 'desc',
+        },
+        where,
+        skip,
+        take,
+      });
+
+      const countBook = await this.prismaService.book.count({
+        where,
+      });
+
+      return PaginationResponse(
+        book,
+        countBook,
+        Number(query?.page || 0),
+        Number(query?.limit || 0),
+      );
     } catch (error) {
       throw new BadRequestException(error?.message || 'Something went wrong');
     }
