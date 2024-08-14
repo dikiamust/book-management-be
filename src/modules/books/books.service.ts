@@ -73,7 +73,7 @@ export class BookService {
     }
   }
 
-  private async detGetail(bookId: string) {
+  private async getGetail(bookId: string) {
     try {
       return await this.prismaService.book.findFirstOrThrow({
         where: { id: bookId, deletedAt: null },
@@ -88,7 +88,7 @@ export class BookService {
 
   async detail(bookId: string) {
     try {
-      const book = await this.detGetail(bookId);
+      const book = await this.getGetail(bookId);
       const { id, title, author, publishedYear, genres, stock } = book;
       return { id, title, author, publishedYear, genres, stock };
     } catch (error) {
