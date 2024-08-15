@@ -83,6 +83,9 @@ $ yarn start:dev
 
 # production mode
 $ yarn start:prod
+
+# Docker Compose
+$ docker compose up --build
 ```
 
 ## Api Doc.
