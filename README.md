@@ -26,37 +26,68 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
+## Intro
 
-```bash
-$ npm install
+# Book Management API
+
+**Book Management API** is a lightweight backend application developed using NestJS, Prisma, and PostgreSQL. The project provides a library book management system (CRUD Operation).
+
+## Clone
+
+```sh
+git clone https://github.com/dikiamust/book-management-be
+
+cd book-management-be
 ```
 
-## Running the app
+## Environment Variables
 
-```bash
-# development
-$ npm run start
+You can see it in the .env.example file
 
-# watch mode
-$ npm run start:dev
+```sh
+cp .env.example .env
+```
 
-# production mode
-$ npm run start:prod
+## Installation
+
+```sh
+yarn # or yarn install
+```
+
+## Database Migration
+
+```sh
+# Generate Prisma Client
+ yarn db:generate
+
+#  run migration
+yarn db:migrate
+
 ```
 
 ## Test
 
 ```bash
 # unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+$ yarn run test
 ```
+
+## Running the app
+
+```bash
+# development
+$ yarn start
+
+# watch mode
+$ yarn start:dev
+
+# production mode
+$ yarn start:prod
+```
+
+## Api Doc.
+
+Once the application is running, you can access the API documentation at http://localhost:3000/api-doc
 
 ## Support
 
