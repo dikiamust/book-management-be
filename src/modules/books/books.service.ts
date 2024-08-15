@@ -62,12 +62,7 @@ export class BookService {
         where,
       });
 
-      return PaginationResponse(
-        book,
-        countBook,
-        Number(query?.page || 0),
-        Number(query?.limit || 0),
-      );
+      return PaginationResponse(book, countBook, query?.page, query?.limit);
     } catch (error) {
       throw new BadRequestException(error?.message || 'Something went wrong');
     }

@@ -1,6 +1,15 @@
-import { IsNotEmpty, IsString, IsInt, IsArray } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsInt,
+  IsArray,
+  Min,
+  Max,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
+const publishedYearErrMsg =
+  'Please provide publishedYear in valid format, it must be exactly 4 digits, and must be between 1500 and 3000 like 1900';
 export class CreateBookDto {
   @ApiProperty({
     example: 'The Great Gatsby',
@@ -23,7 +32,13 @@ export class CreateBookDto {
     description: 'The year the book was published',
   })
   @IsNotEmpty()
-  @IsInt()
+  @IsInt({ message: publishedYearErrMsg })
+  @Min(1500, {
+    message: publishedYearErrMsg,
+  })
+  @Max(3000, {
+    message: publishedYearErrMsg,
+  })
   publishedYear: number;
 
   @ApiProperty({

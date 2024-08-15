@@ -7,6 +7,7 @@ export class PaginationDto {
     example: 1,
     description: 'Page number to retrieve',
     minimum: 1,
+    required: false,
   })
   @IsNumber()
   @Min(1)
@@ -18,6 +19,7 @@ export class PaginationDto {
     description: 'Number of items per page',
     minimum: 1,
     maximum: 100,
+    required: false,
   })
   @IsNumber({
     allowInfinity: false,
