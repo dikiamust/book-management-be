@@ -1,10 +1,10 @@
 import { create } from './create.response';
 
 export const list = {
-  totalData: 1,
+  totalDatas: 1,
   page: 1,
   limit: 10,
-  totalPage: 1,
+  totalPages: 1,
   data: [
     {
       id: 'clztuw5l30000vk49e8kro229',

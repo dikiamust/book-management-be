@@ -13,7 +13,15 @@ export class LoggerMiddleware implements NestMiddleware {
       const { statusCode } = response;
       const contentLength = response.get('content-length');
 
-      this.logger.log(`${method} ${originalUrl} ${statusCode} ${contentLength} - ${userAgent} ${ip}`);
+      if (statusCode >= 400) {
+        this.logger.error(
+          `${method} ${originalUrl} ${statusCode} ${contentLength} - ${userAgent} ${ip}`,
+        );
+      } else {
+        this.logger.log(
+          `${method} ${originalUrl} ${statusCode} ${contentLength} - ${userAgent} ${ip}`,
+        );
+      }
     });
 
     next();
