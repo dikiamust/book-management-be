@@ -31,11 +31,9 @@ describe('BookController', () => {
           useValue: {
             create: jest.fn(),
             list: jest.fn(),
-            detail: jest.fn().mockResolvedValue(mockBook),
-            update: jest.fn().mockResolvedValue(mockUpdatedBook),
-            delete: jest
-              .fn()
-              .mockResolvedValue({ message: 'Book deleted successfully' }),
+            detail: jest.fn(),
+            update: jest.fn(),
+            delete: jest.fn(),
           },
         },
       ],
@@ -153,8 +151,19 @@ describe('BookController', () => {
 
   describe('detail', () => {
     it('should return book details for a valid bookId', async () => {
+      jest.spyOn(bookService, 'detail').mockResolvedValue({
+        id: 'clztuw5l30000vk49e8kro229',
+        ...mockBook,
+        deletedAt: null,
+      } as any);
+
       const result = await bookController.detail(bookId);
-      expect(result).toEqual(mockBook);
+
+      expect(result).toEqual({
+        id: 'clztuw5l30000vk49e8kro229',
+        ...mockBook,
+        deletedAt: null,
+      });
       expect(bookService.detail).toHaveBeenCalledWith(bookId);
     });
 
@@ -180,6 +189,10 @@ describe('BookController', () => {
         genres: ['Fiction', 'Classics'],
         stock: 10,
       };
+
+      jest
+        .spyOn(bookService, 'update')
+        .mockResolvedValue(mockUpdatedBook as any);
 
       const result = await bookController.update(bookId, updateBookDto);
 
@@ -212,6 +225,10 @@ describe('BookController', () => {
 
   describe('delete', () => {
     it('should successfully delete a book', async () => {
+      jest
+        .spyOn(bookService, 'delete')
+        .mockResolvedValue({ message: 'Book deleted successfully' });
+
       const result = await bookController.delete(bookId);
 
       expect(result).toEqual({ message: 'Book deleted successfully' });

@@ -20,7 +20,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: sh -c "yarn db:deploy && yarn start:dev"
+    command: sh -c "yarn db:migrate && yarn start:dev" # Use 'yarn db:deploy' in staging & production environment
     ports:
       - '${PORT}:${PORT}'
     volumes:
